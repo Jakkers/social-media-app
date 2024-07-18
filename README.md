@@ -20,7 +20,7 @@ Requesting feedback about a specific part of your submission.
   - Includes Db Schema, wireframes, functionality etc...
 - Focus on authentication as priority
 - Db Schema:
-  - You need at least two tables: a users table contianing clerk_id and a posts table connected to the users by the clerk_id. The cler_id is the foreign key in the posts table. One-to-Many relationship --> one user has many posts.
+  - You need at least two tables: a users table contianing clerk_id and a posts table connected to the users by the clerk_id. The clerk_id is the foreign key in the posts table. One-to-Many relationship --> one user has many posts.
   - If you are doing the likes stretch goal, you need a third table for likes.
   - If you are doing the followers stretch goal, you need a junction table for the follower_id and the followee_id --> **Many to Many relationship.** --> one user can folow many users, and those users can also follow many users.
 - **Very important** --> When deploying to Vercel, remember to add **ALL** the environment variables (clerk and database!)
