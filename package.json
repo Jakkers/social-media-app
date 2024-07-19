@@ -11,12 +11,17 @@
   "dependencies": {
     "@clerk/nextjs": "^5.2.4",
     "@clerk/themes": "^2.1.12",
+    "@radix-ui/react-form": "^0.1.0",
+    "@radix-ui/themes": "^3.1.1",
+    "cors": "^2.8.5",
     "next": "14.2.5",
+    "pg": "^8.12.0",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/pg": "^8.11.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
