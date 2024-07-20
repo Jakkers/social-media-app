@@ -4,11 +4,12 @@ import "./globals.css";
 
 //importing radix ui themes
 import "@radix-ui/themes/styles.css";
-import { Theme, ThemePanel } from "@radix-ui/themes";
+import { Container, Theme, ThemePanel } from "@radix-ui/themes";
 
 //importing clerkprovider
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+// import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,8 +32,11 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <Theme accentColor="grass">
-            {children}
-            <ThemePanel />
+            <Container size="2">
+              {/* <Header /> */}
+              {children}
+              <ThemePanel />
+            </Container>
           </Theme>
         </body>
       </html>

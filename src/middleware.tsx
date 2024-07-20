@@ -1,7 +1,12 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 //I want to tell Clerk what routes are protected
-const isProtectedRoute = createRouteMatcher(["/user(.*)"]);
+const isProtectedRoute = createRouteMatcher([
+  "/user(.*)",
+  "/posts(.*)",
+  "/newPost(.*)",
+  "/editProfile(.*)",
+]);
 
 //to define public and protected routes
 export default clerkMiddleware((auth, req) => {

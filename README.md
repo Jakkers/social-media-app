@@ -25,3 +25,8 @@ Requesting feedback about a specific part of your submission.
   - If you are doing the followers stretch goal, you need a junction table for the follower_id and the followee_id --> **Many to Many relationship.** --> one user can folow many users, and those users can also follow many users.
 - **Very important** --> When deploying to Vercel, remember to add **ALL** the environment variables (clerk and database!)
 - If you are using TypeScript, make sure you don't have type errors, type errors break your deployment.
+
+# Attributes
+
+- Photo by <a href="https://unsplash.com/@anniespratt?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Annie Spratt</a> on <a href="https://unsplash.com/photos/a-street-lined-with-tall-buildings-next-to-trees-yl9UXWSYJRQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+- Photo by <a href="https://unsplash.com/@lucabravo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Luca Bravo</a> on <a href="https://unsplash.com/photos/turned-on-gray-laptop-computer-XJXWbfSo2f0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
