@@ -36,7 +36,7 @@ export default function RootLayout({
             <Container size="2">
               {/* <Header /> */}
               {children}
-              <ThemePanel />
+              {/* <ThemePanel /> */}
             </Container>
           </Theme>
         </body>
