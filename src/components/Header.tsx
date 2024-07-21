@@ -36,7 +36,7 @@ export default function Header() {
               <Button>
                 <SignUpButton>Sign Up</SignUpButton>
               </Button>
-              <Button variant="ghost">
+              <Button variant="outline">
                 <SignInButton>Sign In</SignInButton>
               </Button>
             </SignedOut>
