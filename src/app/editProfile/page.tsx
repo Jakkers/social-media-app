@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import { Heading, Separator, Flex, Button, Text } from "@radix-ui/themes";
-import Link from "next/link";
 import { dbConnect } from "@/utils/dbConnection";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -23,14 +22,12 @@ export default async function EditProfilePage() {
 
   async function handleSubmit(formData: FormData) {
     "use server";
-    const email = formData.get("email");
     const bio = formData.get("bio");
-    const userImage = formData.get("user_image");
     const db = dbConnect();
-    await db.query(
-      `UPDATE users SET email = $1, bio = $2, user_image = $3 WHERE clerk_id = $4`,
-      [email, bio, userImage, userId]
-    );
+    await db.query(`UPDATE users SET bio = $1 WHERE clerk_id = $2`, [
+      bio,
+      userId,
+    ]);
 
     revalidatePath("/user(.*)");
     redirect("/user/profile");
@@ -42,14 +39,6 @@ export default async function EditProfilePage() {
       <Separator my="3" size="4" />
       <Flex direction="column" gap="2">
         <form action={handleSubmit} className="flex flex-col gap-2">
-          <label htmlFor="email">Change your email</label>
-          <input
-            type="text"
-            className="border-solid border-2 rounded-sm border-slate-500"
-            name="email"
-            defaultValue={usersInfo?.email}
-            required
-          />
           <label htmlFor="bio">Change your bio</label>
           <textarea
             className="border-solid border-2 rounded-sm border-slate-500"
@@ -59,7 +48,7 @@ export default async function EditProfilePage() {
             defaultValue={usersInfo?.bio}
             required
           />
-          <label htmlFor="user_image">Change your profile picture (url)</label>
+          {/* <label htmlFor="user_image">Change your profile picture (url)</label>
           <input
             type="text"
             className="border-solid border-2 rounded-sm border-slate-500"
@@ -74,7 +63,7 @@ export default async function EditProfilePage() {
             className="text-sky-500"
           >
             Create Image URL
-          </Link>
+          </Link> */}
           <Button type="submit">Submit</Button>
         </form>
       </Flex>

@@ -38,7 +38,7 @@ export default async function UserIdPage() {
   //we need the user id from clerk auth
   //! the userId is a alphanumerical string that clerk creates AFTER the user signs up for clerk in the sign-up page (<SignUp/>)
   const { userId } = auth(); //this userId is the clerk id --> same value
-  //   console.log(userId);
+  console.log(userId);
 
   if (userId) {
     //add a SQL query getting the users data
@@ -51,10 +51,17 @@ export default async function UserIdPage() {
     await db.query(`SELECT * FROM users WHERE clerk_id = $1`, [userId])
   ).rows;
 
-  const userEmail = userData?.emailAddresses[0].emailAddress;
+  const user_email = userData?.emailAddresses[0].emailAddress;
+  const username = userData?.username;
+  const first_name = userData?.firstName;
+  const last_name = userData?.lastName;
   //   console.log(userEmail);
-  // const userImage = userData?.externalAccounts[0].imageUrl;
+  const userImage = userData?.imageUrl;
   // console.log(userImage);
+
+  // userImage = userImage
+  //   ? userImage
+  //   : "https://i.postimg.cc/tgZGhD0b/Screenshot-2024-07-20-at-18-50-59.png";
 
   //we need a form for the user to add the data
   // we need a handle submit
@@ -64,22 +71,15 @@ export default async function UserIdPage() {
     //we need to activate the dbConnection
     //we need to get the formData input
     const bio = formData.get("bio");
-    const username = formData.get("username");
     //we need to insert data in the database 9SQL is incomplete)
     const db = dbConnect();
     await db.query(
-      `INSERT INTO users (first_name, last_name, username, email, bio, user_image, clerk_id) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [
-        userData?.firstName,
-        userData?.lastName,
-        username,
-        userEmail,
-        bio,
-        userData?.externalAccounts[0].imageUrl,
-        userId,
-      ]
+      `INSERT INTO users (first_name, last_name, username, user_image, email, bio, clerk_id) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [first_name, last_name, username, userImage, user_email, bio, userId]
     );
     // you need to revalidatePath and redirect
+    revalidatePath("/user/profile");
+    redirect("/posts");
   }
 
   if (usersInfo.length > 0) {
@@ -89,53 +89,48 @@ export default async function UserIdPage() {
         <Flex direction="row" justify="between">
           <Heading>Profile</Heading>{" "}
           <Link href="/editProfile">
-            <Button>Edit Profile</Button>
+            <Button>Edit Bio</Button>
           </Link>
         </Flex>
         <Separator my="3" size="4" />
         {/* Mapping a user card so they can see how their profile looks at a glance  */}
         {usersInfo.map((item) => (
-          <Box key={item.id}>
-            <Card>
-              <Flex gap="3" align="center">
-                <Avatar
-                  size="3"
-                  src={item.user_image}
-                  radius="full"
-                  fallback="T"
-                />
-                <Box>
-                  <Text as="div" size="2" weight="bold">
+          <>
+            <Box key={item.id}>
+              <Card>
+                <Flex gap="3" align="center">
+                  <Avatar size="3" src={userImage} radius="full" fallback="T" />
+                  <Box>
+                    <Text as="div" size="2" weight="bold">
+                      {item.first_name} {item.last_name}
+                    </Text>
+                    <Text as="div" size="2" color="gray">
+                      @{item.username}
+                    </Text>
+                  </Box>
+                </Flex>
+              </Card>
+            </Box>
+            <Table.Root>
+              <Table.Header>
+                <Table.Row>
+                  <Table.ColumnHeaderCell>Username</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                <Table.Row>
+                  <Table.RowHeaderCell> {item.username}</Table.RowHeaderCell>
+                  <Table.Cell>
+                    {" "}
                     {item.first_name} {item.last_name}
-                  </Text>
-                  <Text as="div" size="2" color="gray">
-                    @{item.username}
-                  </Text>
-                </Box>
-              </Flex>
-            </Card>
-          </Box>
-        ))}
-        <Table.Root>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeaderCell>Username</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            <Table.Row>
-              <Table.RowHeaderCell> {userData?.username}</Table.RowHeaderCell>
-              <Table.Cell>
-                {" "}
-                {userData?.firstName} {userData?.lastName}
-              </Table.Cell>
-              <Table.Cell>{userEmail}</Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table.Root>
-        {/* <Flex direction="column" width="10" gap="2">
+                  </Table.Cell>
+                  <Table.Cell>{user_email}</Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table.Root>
+            {/* <Flex direction="column" width="10" gap="2">
           <Text>Username</Text>
           <Text>{userData?.username}</Text>
           <br></br>
@@ -147,17 +142,20 @@ export default async function UserIdPage() {
           <Text>Email</Text>
           <Text>{userEmail}</Text>
           <br></br> */}
-        <br></br>
-        <Text>
-          <Strong>Bio</Strong>
-        </Text>
-        <Separator my="3" size="4" />
-        {usersInfo.map((item) => (
-          <Text key={item.id}>{item.bio}</Text>
+            <br></br>
+            <Text>
+              <Strong>Bio</Strong>
+            </Text>
+            <Separator my="3" size="4" />
+            {/* // {usersInfo.map((item) => ( */}
+            <Text key={item.id}>{item.bio}</Text>
+          </>
         ))}
-        {/* </Flex> */}
       </>
     );
+    {
+      /* </Flex> */
+    }
   } else {
     return (
       <>
@@ -168,13 +166,6 @@ export default async function UserIdPage() {
         <Separator my="3" size="4" />
         <Flex direction="column" gap="2">
           <form action={handleSubmit} className="flex flex-col gap-2">
-            <label htmlFor="username">Fill in your username</label>
-            <input
-              type="text"
-              className="border-solid border-2 rounded-sm border-slate-500"
-              name="username"
-              required
-            />
             <label htmlFor="bio">Fill in your bio</label>
             <textarea
               className="border-solid border-2 rounded-sm border-slate-500"

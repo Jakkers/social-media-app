@@ -40,3 +40,30 @@ CREATE TABLE IF NOT EXISTS
     FOREIGN KEY ("clerk_id") REFERENCES follows ("followee_id"),
     FOREIGN KEY ("likes_id") REFERENCES likes ("id")
   );
+
+-- Updated Queries for MVP
+
+CREATE TABLE IF NOT EXISTS
+  users (
+    id SERIAL PRIMARY key,
+    first_name TEXT,
+    last_name TEXT,
+    username TEXT,
+    email TEXT,
+    bio TEXT,
+    user_image TEXT,
+    clerk_id TEXT,
+    CONSTRAINT clerk_id UNIQUE (clerk_id)
+  );
+
+
+CREATE TABLE IF NOT EXISTS
+  social_posts (
+    id SERIAL PRIMARY key,
+    title TEXT,
+    image TEXT,
+    content TEXT,
+    clerk_id TEXT,
+    likes_id BIGINT,
+    FOREIGN KEY ("clerk_id") REFERENCES users ("clerk_id"),
+  );

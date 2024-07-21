@@ -9,6 +9,7 @@ import { Container, Theme, ThemePanel } from "@radix-ui/themes";
 //importing clerkprovider
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import Header from "@/components/Header";
 // import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
